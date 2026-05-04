@@ -366,9 +366,11 @@ public class OrgServiceImpl implements OrgService {
         Map<Long, List<IndustryDto>> industryMap = industryService.getMapIndustriesByOrgIds(orgIds);
 
         List<OrgDto> orgDtos = ObjectMapperUtils.convertToList(orgPage.getContent(), OrgDto.class);
-        for(OrgDto orgDto : orgDtos) {
-            orgDto.setAddresses(addressMap.getOrDefault(orgDto.getId(), null));
-            orgDto.setIndustryList(industryMap.getOrDefault(orgDto.getId(), null));
+        if (orgDtos != null) {
+            for(OrgDto orgDto : orgDtos) {
+                orgDto.setAddresses(addressMap.getOrDefault(orgDto.getId(), null));
+                orgDto.setIndustryList(industryMap.getOrDefault(orgDto.getId(), null));
+            }
         }
 
         return PageUtils.toFilterResponse(orgPage, orgDtos);

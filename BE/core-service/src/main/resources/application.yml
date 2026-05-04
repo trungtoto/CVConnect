@@ -4,7 +4,7 @@ spring:
   profiles:
     active: ${ENVIRONMENT:dev}
   datasource:
-    url: jdbc:postgresql://${DB_POSTGRES_HOST:localhost}:5432/cvconnect-core-service
+    url: jdbc:postgresql://${DB_POSTGRES_HOST:localhost}:5432/cvconnect-core-service?options=-c%20TimeZone%3DUTC
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -38,7 +38,7 @@ server:
   user_service: http://${HOST_USER_SERVICE:localhost}:${PORT_USER_SERVICE:8080}/user
   notify_service: http://${HOST_NOTIFY_SERVICE:localhost}:${PORT_NOTIFY_SERVICE:8081}/notify
   core_service: http://${HOST_CORE_SERVICE:localhost}:${PORT_CORE_SERVICE:8082}/core
-  email-admin: nnmhqn2003@gmail.com
+  email-admin: lbthanhtrung@gmail.com
 
 logging:
   level:
@@ -78,6 +78,6 @@ kafka:
     send-email: send-email-topic
 
 cloudinary:
-  cloud-name: ${CLOUDINARY_CLOUD_NAME:}
-  api-key: ${CLOUDINARY_API_KEY:}
-  api-secret: ${CLOUDINARY_API_SECRET:}
+  cloud-name: dovinkupc
+  api-key: 469321589869288
+  api-secret: r2vmPt_HoNCJCK9JAdKJPnvtiq4

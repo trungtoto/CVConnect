@@ -4,6 +4,7 @@ spring:
   profiles:
     active: ${ENVIRONMENT:dev}
   datasource:
+    # url: jdbc:mysql://${DB_MYSQL_HOST:localhost}:3306/cvconnect-user-service?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci
     url: jdbc:mysql://${DB_MYSQL_HOST:localhost}:3306/cvconnect-user-service
     username: root
     password: root
@@ -47,7 +48,7 @@ server:
         path: /
   host_redis: ${REDIS_HOST:localhost}
   port_redis: 6379
-  email-admin : nnmhqn2003@gmail.com
+  email-admin : lbthanhtrung@gmail.com
   user_service: http://${HOST_USER_SERVICE:localhost}:${PORT_USER_SERVICE:8080}/user
   notify_service: http://${HOST_NOTIFY_SERVICE:localhost}:${PORT_NOTIFY_SERVICE:8081}/notify
   core_service: http://${HOST_CORE_SERVICE:localhost}:${PORT_CORE_SERVICE:8082}/core

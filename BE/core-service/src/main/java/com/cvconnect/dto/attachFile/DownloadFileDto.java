@@ -19,4 +19,5 @@ public class DownloadFileDto {
     private String filename;
     private ByteArrayInputStream byteArrayInputStream;
     private InputStreamResource resource;
+    private String contentType;
 }

@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.cvconnect</groupId>
         <artifactId>cvconnect</artifactId>
-        <version>${revision}</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>notify-service</artifactId>
-    <version>${revision}</version>
+    <version>1.0-SNAPSHOT</version>
     <name>notify-service</name>
     <description>notify-service</description>
 
@@ -94,9 +94,9 @@
         </dependency>
 
         <dependency>
-            <groupId>nmquan</groupId>
+            <groupId>trungtoto</groupId>
             <artifactId>common-lib</artifactId>
-            <version>${common-lib.version}</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
@@ -111,6 +111,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
             </plugin>
         </plugins>
     </build>

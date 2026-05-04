@@ -9,6 +9,7 @@ import java.util.List;
 public interface AttachFileService {
     List<Long> uploadFile(MultipartFile[] files);
     List<AttachFileDto> getAttachFiles(List<Long> ids);
+    String getDownloadUrl(Long id);
     DownloadFileDto download(Long id);
     void deleteByIds(List<Long> ids);
 }

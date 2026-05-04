@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,28 +51,34 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 String baseName = FilenameUtils.getBaseName(originalFilename);
                 String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
 
-                String newFileName = baseName + "_" + System.currentTimeMillis();
+                String newFileName = sanitizePublicId(baseName) + "_" + System.currentTimeMillis();
                 if (extension.matches("doc|docx")) {
                     newFileName = newFileName + "." + extension;
                 }
+                String resourceType = "auto";
+                if (extension.matches("pdf|doc|docx")) {
+                    resourceType = "raw";
+                }
+
                 Map map = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                        "folder", FOLDER_BASE + folder,
-                        "resource_type", "auto",
-                        "public_id", newFileName
+                    "folder", FOLDER_BASE + folder,
+                    "resource_type", resourceType,
+                    "type", "upload",
+                    "public_id", newFileName
                 ));
                 AttachFileDto attachFileDto = AttachFileDto.builder()
-                        .originalFilename(originalFilename)
-                        .baseFilename(baseName)
-                        .extension(extension)
-                        .filename(newFileName)
-                        .format(map.get("format")!= null ? map.get("format").toString() : null)
-                        .resourceType(map.get("resource_type").toString())
-                        .secureUrl(map.get("secure_url").toString())
-                        .type(map.get("type").toString())
-                        .url(map.get("url").toString())
-                        .publicId(map.get("public_id").toString())
-                        .folder(map.get("folder").toString())
-                        .build();
+                    .originalFilename(originalFilename)
+                    .baseFilename(baseName)
+                    .extension(extension)
+                    .filename(newFileName)
+                    .format(map.get("format") != null ? map.get("format").toString() : null)
+                    .resourceType(map.get("resource_type") != null ? map.get("resource_type").toString() : null)
+                    .secureUrl(map.get("secure_url") != null ? map.get("secure_url").toString() : null)
+                    .type(map.get("type") != null ? map.get("type").toString() : null)
+                    .url(map.get("url") != null ? map.get("url").toString() : null)
+                    .publicId(map.get("public_id") != null ? map.get("public_id").toString() : null)
+                    .folder(map.get("folder") != null ? map.get("folder").toString() : null)
+                    .build();
                 attachFileDtos.add(attachFileDto);
             }
             return attachFileDtos;
@@ -99,6 +106,19 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                         contentType.equals("application/msword") ||   // .doc
                         contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")   // .docx
         );
+    }
+
+    private String sanitizePublicId(String input) {
+        if (input == null) {
+            return "file";
+        }
+
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFKD);
+        String ascii = normalized.replaceAll("[^\\p{ASCII}]", "");
+        String safe = ascii.replaceAll("[^A-Za-z0-9_-]+", "_");
+        safe = safe.replaceAll("_+", "_").replaceAll("^_+|_+$", "");
+
+        return safe.isBlank() ? "file" : safe;
     }
 
 }

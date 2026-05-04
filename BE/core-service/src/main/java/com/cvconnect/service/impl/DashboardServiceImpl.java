@@ -319,11 +319,13 @@ public class DashboardServiceImpl implements DashboardService {
                 .map(p -> {
                     Long orgId = ((Number) p[0]).longValue();
                     String orgName = (String) p[1];
-                    Long orgLogoId = ((Number) p[2]).longValue();
-                    Long numberOfJobAds = ((Number) p[3]).longValue();
-                    Long numberOfApplications = ((Number) p[4]).longValue();
-                    Long numberOfOnboarded = ((Number) p[5]).longValue();
-                    List<AttachFileDto> attachFiles = attachFileService.getAttachFiles(List.of(orgLogoId));
+                    Long orgLogoId = p[2] == null ? null : ((Number) p[2]).longValue();
+                    Long numberOfJobAds = p[3] == null ? 0L : ((Number) p[3]).longValue();
+                    Long numberOfApplications = p[4] == null ? 0L : ((Number) p[4]).longValue();
+                    Long numberOfOnboarded = p[5] == null ? 0L : ((Number) p[5]).longValue();
+                    List<AttachFileDto> attachFiles = orgLogoId == null
+                            ? Collections.emptyList()
+                            : attachFileService.getAttachFiles(List.of(orgLogoId));
                     String orgLogo = null;
                     if(!ObjectUtils.isEmpty(attachFiles)) {
                         if(!ObjectUtils.isEmpty(attachFiles.get(0))) {
@@ -577,7 +579,8 @@ public class DashboardServiceImpl implements DashboardService {
         }
         double change = ((current.doubleValue() - previous.doubleValue()) / previous.doubleValue()) * 100.0;
         change = Math.round(change * 100.0) / 100.0;
-        return (change >= 0 ? "+" : "") + change + "% so với tháng trước";
+        return (change >= 0 ? "+" : "") + change + "% so vá»›i thÃ¡ng trÆ°á»›c";
     }
 
 }
+
